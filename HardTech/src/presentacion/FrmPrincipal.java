@@ -230,10 +230,10 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         
-        /*FrmArticulo frm = new FrmArticulo();
+        FrmArticulo frm = new FrmArticulo();
         escritorio.add(frm);
         frm.setVisible(true);
-        */
+        
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed

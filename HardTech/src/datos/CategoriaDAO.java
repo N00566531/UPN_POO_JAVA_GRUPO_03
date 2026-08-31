@@ -71,7 +71,7 @@ public class CategoriaDAO implements CrudSimpleInterface<Categoria> {
         return registros; //Retorno registros del array, es decir, la lista
     }
     
-    //Método propio de la Clase; devuelve lista de objetos Categoria
+    //Método de la Clase; devuelve lista de objetos Categoria
     public List<Categoria> seleccionar() {
         
         //ArrayList que se usará para almacenar cada objeto de Categoria
