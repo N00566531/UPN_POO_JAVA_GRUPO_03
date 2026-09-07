@@ -119,17 +119,17 @@ public class UsuarioControl {
         return items; //retorno el obj items para mostrar en un JComboBox
     }
   
-  /*
+  
   public String login(String email, String clave){//espera dos parametros
       
-      String resp="0";//usuario en un primer momento no existe
+      String resp="0";//Usuario no existe
       //obj de tipo Usuario: instancio a la capa datos, al met login y envio email y clave encriptada
       Usuario usu = this.DATOS.login(email,this.encriptar(clave));
       
-      if(usu!=null){ //si el usuario es váldio, es decir, diferente de null
-          if(usu.isActivo()){ //si usuario es true es porque está activo
-              //envio valores a cada variable de la clase publica Variables
-              Variables.usuarioId=usu.getId(); //le envio lo que obtengo en el obj usu (el id)
+      if(usu!=null){ //si el usuario es valido
+          if(usu.isActivo()){ //si usuario está activo
+              //envio valores a cada variable de la clase Variables
+              Variables.usuarioId=usu.getId();
               Variables.rolId=usu.getRolId(); 
               Variables.rolNombre=usu.getRolNombre(); 
               Variables.usuarioNombre=usu.getNombre();
@@ -145,7 +145,7 @@ public class UsuarioControl {
       return resp; //retorno respuesta
       
   }
-    */
+    
   
   //Metodo estático privado de tipo String
  private static String encriptar(String valor){ 
