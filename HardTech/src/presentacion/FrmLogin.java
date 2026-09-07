@@ -1,22 +1,19 @@
-
 package presentacion;
 
 import javax.swing.JOptionPane;
 import negocio.UsuarioControl;
-
+import negocio.Variables;
 
 public class FrmLogin extends javax.swing.JFrame {
 
-   
     public FrmLogin() {
         initComponents();
         this.setTitle("Acceso a tienda HardTech");
         //ventana al centro
         this.setLocationRelativeTo(null);
-        
+
     }
 
-   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -129,35 +126,41 @@ public class FrmLogin extends javax.swing.JFrame {
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
         //Valido que las cajas tengan email y clave
-        if(txtEmail.getText().length()==0 || txtEmail.getText().length()>50){
-            JOptionPane.showMessageDialog(this,"Debes ingresar un email, y no debe superar los 50 caracteres.","Sistema",JOptionPane.WARNING_MESSAGE);
+        if (txtEmail.getText().length() == 0 || txtEmail.getText().length() > 50) {
+            JOptionPane.showMessageDialog(this, "Debes ingresar un email, y no debe superar los 50 caracteres.", "Sistema", JOptionPane.WARNING_MESSAGE);
             txtEmail.requestFocus();
             return;
         }
-        if(txtClave.getText().length()==0 || txtClave.getText().length()>64){
-            JOptionPane.showMessageDialog(this,"Debes ingresar una clave de acceso, y no debe superar los 64 caracteres.","Sistema",JOptionPane.WARNING_MESSAGE);
+        if (txtClave.getText().length() == 0 || txtClave.getText().length() > 64) {
+            JOptionPane.showMessageDialog(this, "Debes ingresar una clave de acceso, y no debe superar los 64 caracteres.", "Sistema", JOptionPane.WARNING_MESSAGE);
             txtClave.requestFocus();
             return;
         }
-        
+
         //Obj que instancia a UsuarioControl
-        UsuarioControl control=new UsuarioControl();
+        UsuarioControl control = new UsuarioControl();
         //Var para acceder al met login y le envio el email y la clave y validar
-        String resp=control.login(txtEmail.getText(), txtClave.getText());
+        String resp = control.login(txtEmail.getText(), txtClave.getText());
         //Si se retorna un 1
-        if (resp.equals("1")){ //está activo
+        if (resp.equals("1")) { //está activo
+            JOptionPane.showMessageDialog(
+                    this,
+                    "¡Bienvenido(a) " + Variables.usuarioNombre + "!\nRol: " + Variables.rolNombre,
+                    "Acceso Concedido",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
             //oculto login
             this.dispose();
             //lleva al Frm padre
-            FrmPrincipal frm=new FrmPrincipal();
+            FrmPrincipal frm = new FrmPrincipal();
             //aparece de frente
             frm.toFront();
             //visible
             frm.setVisible(true);
-        }else if(resp.equals("2")){ //sino (existe pero no está activo)
-            JOptionPane.showMessageDialog(this,"Usuario no tiene acceso.","Sistema",JOptionPane.ERROR_MESSAGE);
-        }else{ //usuario no existe
-            JOptionPane.showMessageDialog(this,"Los datos de acceso son incorrectos.","Sistema",JOptionPane.ERROR_MESSAGE);
+        } else if (resp.equals("2")) { //sino (existe pero no está activo)
+            JOptionPane.showMessageDialog(this, "Usuario no tiene acceso.", "Sistema", JOptionPane.ERROR_MESSAGE);
+        } else { //usuario no existe
+            JOptionPane.showMessageDialog(this, "Los datos de acceso son incorrectos.", "Sistema", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnIngresarActionPerformed
 
