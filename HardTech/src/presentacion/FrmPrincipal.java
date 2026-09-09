@@ -1,58 +1,54 @@
-
 package presentacion;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
-
 public class FrmPrincipal extends javax.swing.JFrame {
 
-    
     //Constructor
     public FrmPrincipal() {
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);//MAXIMIZO FORMULARIO
         this.cargarOpcionesMenu();
     }
-    
-    //Método para dar accesos según rol
-    private void cargarOpcionesMenu(){
-      /*
-       if(negocio.Variables.rolNombre.equals("Administrador")){
-           mnuAlmacen.setEnabled(true);
-           mnuCompras.setEnabled(true);
-           mnuVentas.setEnabled(true);
-           mnuAcceso.setEnabled(true);
-           itemConsultaCompras.setEnabled(true);
-           itemConsultaVentas.setEnabled(true);
-           
-          } else if (negocio.Variables.rolNombre.equals("Almacenero")){
-           mnuAlmacen.setEnabled(true);
-           mnuCompras.setEnabled(true);
-           mnuVentas.setEnabled(false);
-           mnuAcceso.setEnabled(false);
-           itemConsultaCompras.setEnabled(true);
-           itemConsultaVentas.setEnabled(false);
-          } else if (negocio.Variables.rolNombre.equals("Vendedor")){
-            
-           mnuAlmacen.setEnabled(false);
-           mnuCompras.setEnabled(false);
-           mnuVentas.setEnabled(true);
-           mnuAcceso.setEnabled(false);
-           itemConsultaCompras.setEnabled(false);
-           itemConsultaVentas.setEnabled(true);  
-          }else {
-           mnuAlmacen.setEnabled(false);
-           mnuCompras.setEnabled(false);
-           mnuVentas.setEnabled(false);
-           mnuAcceso.setEnabled(false);
-           itemConsultaCompras.setEnabled(false);
-           itemConsultaVentas.setEnabled(false);  
-          }
-        */
- }
 
-    
+    //Método para dar accesos según rol
+    private void cargarOpcionesMenu() {
+
+        if (negocio.Variables.rolNombre.equals("Administrador")) {
+            mnuAlmacen.setEnabled(true);
+            mnuCompras.setEnabled(true);
+            mnuVentas.setEnabled(true);
+            mnuAcceso.setEnabled(true);
+            itemConsultaCompras.setEnabled(true);
+            itemConsultaVentas.setEnabled(true);
+
+        } else if (negocio.Variables.rolNombre.equals("Almacenero")) {
+            mnuAlmacen.setEnabled(true);
+            mnuCompras.setEnabled(true);
+            mnuVentas.setEnabled(false);
+            mnuAcceso.setEnabled(false);
+            itemConsultaCompras.setEnabled(true);
+            itemConsultaVentas.setEnabled(false);
+        } else if (negocio.Variables.rolNombre.equals("Vendedor")) {
+
+            mnuAlmacen.setEnabled(false);
+            mnuCompras.setEnabled(false);
+            mnuVentas.setEnabled(true);
+            mnuAcceso.setEnabled(false);
+            itemConsultaCompras.setEnabled(false);
+            itemConsultaVentas.setEnabled(true);
+        } else {
+            mnuAlmacen.setEnabled(false);
+            mnuCompras.setEnabled(false);
+            mnuVentas.setEnabled(false);
+            mnuAcceso.setEnabled(false);
+            itemConsultaCompras.setEnabled(false);
+            itemConsultaVentas.setEnabled(false);
+        }
+
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -229,28 +225,28 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        
+
         FrmArticulo frm = new FrmArticulo();
         escritorio.add(frm);
         frm.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         //Cuando hago ref e instancio la clase le enviamos un obj de tipo JFrame (este formularioprincipal)
-        
+
         /*FrmIngreso frm=new FrmIngreso(this);
         escritorio.add(frm);
         frm.setVisible(true);
-        */
+         */
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-      FrmCategoria frm = new FrmCategoria(); //Obj de tipo FrmCategoria e instancio a clase frmcategoria
-      escritorio.add(frm); //lo agrego al escritorio
-      frm.setVisible(true);
-        
-        
+        FrmCategoria frm = new FrmCategoria(); //Obj de tipo FrmCategoria e instancio a clase frmcategoria
+        escritorio.add(frm); //lo agrego al escritorio
+        frm.setVisible(true);
+
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void mnuAlmacenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAlmacenActionPerformed
@@ -258,19 +254,19 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuAlmacenActionPerformed
 
     private void jMenuItem7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem7ActionPerformed
-        /*
-        FrmRol frm =new FrmRol();
+
+        FrmRol frm = new FrmRol();
         escritorio.add(frm);
         frm.setVisible(true);
-        */
+
     }//GEN-LAST:event_jMenuItem7ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        /*
-        FrmUsuario frm =new FrmUsuario();
+
+        FrmUsuario frm = new FrmUsuario();
         escritorio.add(frm);
         frm.setVisible(true);
-        */
+
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -278,7 +274,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         FrmProveedor frm =new FrmProveedor();
         escritorio.add(frm);
         frm.setVisible(true);
-        */
+         */
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
@@ -286,11 +282,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
         FrmCliente frm =new FrmCliente();
         escritorio.add(frm);
         frm.setVisible(true);
-        */
+         */
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void mnuSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuSalirMouseClicked
-            System.exit(0);
+        System.exit(0);
     }//GEN-LAST:event_mnuSalirMouseClicked
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
@@ -298,7 +294,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         FrmVenta frm =new FrmVenta(this);
         escritorio.add(frm);
         frm.setVisible(true);
-        */
+         */
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void itemConsultaComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemConsultaComprasActionPerformed
