@@ -21,7 +21,8 @@ public class Articulo {
     public Articulo() {
     }
     
-     //Const que recibe un parametro por cada var; almacenará los valores de cada parametro
+    //SOBRECARGA DE MÉTODOS
+    //Const que recibe un parametro por cada var; almacenará los valores de cada parametro
     public Articulo(int id, int categoriaId, String categoriaNombre, String codigo, String nombre, double precioVenta, int stock, String descripcion, String imagen, boolean activo) {
         this.id = id;
         this.categoriaId = categoriaId;
@@ -35,6 +36,7 @@ public class Articulo {
         this.activo = activo;
     }
 
+    
     public Articulo(int id, String codigo, String nombre, double precioVenta, int stock) {
         this.id = id;
         this.codigo = codigo;

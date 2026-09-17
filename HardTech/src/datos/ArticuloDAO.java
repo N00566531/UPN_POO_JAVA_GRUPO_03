@@ -96,8 +96,8 @@ public class ArticuloDAO implements CrudPaginadoInterface<Articulo> {
     }
     
     //Met que devuelve un obj de tipo Articulo para compras
-    public Articulo obtenerArticuloCodigoIngreso(String codigo){//espera par codigo
-        //obj de tipo Articulo
+    public Articulo obtenerArticuloCodigoIngreso(String codigo){
+        //Obj de tipo Articulo
         Articulo art=null;
         try {
             //preparo el ps con la consulta SQL
@@ -121,7 +121,7 @@ public class ArticuloDAO implements CrudPaginadoInterface<Articulo> {
             rs=null;
             CON.desconectar();
         }
-        return art; //retorno obj articulo
+        return art; //retorno obj articulo encontrado
     }
     
     public Articulo obtenerArticuloCodigoVenta(String codigo){
