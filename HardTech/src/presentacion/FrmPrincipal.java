@@ -233,12 +233,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        //Cuando hago ref e instancio la clase le enviamos un obj de tipo JFrame (este formularioprincipal)
-
-        /*FrmIngreso frm=new FrmIngreso(this);
+        //Le enviamos un obj de tipo JFrame (este formulario principal)
+        FrmIngreso frm=new FrmIngreso(this);
         escritorio.add(frm);
         frm.setVisible(true);
-         */
+        
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -290,11 +289,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuSalirMouseClicked
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        /*
+        
         FrmVenta frm =new FrmVenta(this);
         escritorio.add(frm);
         frm.setVisible(true);
-         */
+        
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void itemConsultaComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemConsultaComprasActionPerformed
