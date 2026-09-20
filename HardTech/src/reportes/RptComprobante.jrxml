@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RptComprobante" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="53496b9f-11a1-4d36-93ba-df5b75a606ab">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="cnnSistema"/>
+	<parameter name="idventa" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT dbsistema.venta.tipo_comprobante,
+	dbsistema.venta.serie_comprobante,
+	dbsistema.venta.num_comprobante,
+	dbsistema.venta.fecha,
+	dbsistema.venta.impuesto,
+	dbsistema.venta.total,
+	dbsistema.persona.nombre,
+	dbsistema.persona.tipo_documento,
+	dbsistema.persona.num_documento,
+	dbsistema.persona.direccion,
+	dbsistema.persona.telefono,
+	dbsistema.persona.email,
+	dbsistema.usuario.nombre,
+	dbsistema.articulo.codigo,
+	dbsistema.articulo.nombre,
+	dbsistema.detalle_venta.cantidad,
+	dbsistema.detalle_venta.precio,
+	dbsistema.detalle_venta.descuento
+FROM dbsistema.detalle_venta
+	INNER JOIN dbsistema.articulo ON 
+	 dbsistema.detalle_venta.articulo_id = dbsistema.articulo.id 
+	INNER JOIN dbsistema.venta ON 
+	 dbsistema.detalle_venta.venta_id = dbsistema.venta.id 
+	INNER JOIN dbsistema.persona ON 
+	 dbsistema.venta.persona_id = dbsistema.persona.id 
+	INNER JOIN dbsistema.usuario ON 
+	 dbsistema.venta.usuario_id = dbsistema.usuario.id
+WHERE dbsistema.venta.id= $P{idventa}]]>
+	</queryString>
+	<field name="tipo_comprobante" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipo_comprobante"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipo_comprobante"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+	</field>
+	<field name="serie_comprobante" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="serie_comprobante"/>
+		<property name="com.jaspersoft.studio.field.label" value="serie_comprobante"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+	</field>
+	<field name="num_comprobante" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="num_comprobante"/>
+		<property name="com.jaspersoft.studio.field.label" value="num_comprobante"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+	</field>
+	<field name="fecha" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.name" value="fecha"/>
+		<property name="com.jaspersoft.studio.field.label" value="fecha"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+	</field>
+	<field name="impuesto" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="impuesto"/>
+		<property name="com.jaspersoft.studio.field.label" value="impuesto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+	</field>
+	<field name="total" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="total"/>
+		<property name="com.jaspersoft.studio.field.label" value="total"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="venta"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="persona"/>
+	</field>
+	<field name="tipo_documento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="tipo_documento"/>
+		<property name="com.jaspersoft.studio.field.label" value="tipo_documento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="persona"/>
+	</field>
+	<field name="num_documento" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="num_documento"/>
+		<property name="com.jaspersoft.studio.field.label" value="num_documento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="persona"/>
+	</field>
+	<field name="direccion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="direccion"/>
+		<property name="com.jaspersoft.studio.field.label" value="direccion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="persona"/>
+	</field>
+	<field name="telefono" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="telefono"/>
+		<property name="com.jaspersoft.studio.field.label" value="telefono"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="persona"/>
+	</field>
+	<field name="email" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="email"/>
+		<property name="com.jaspersoft.studio.field.label" value="email"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="persona"/>
+	</field>
+	<field name="COLUMN_13" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="usuario"/>
+	</field>
+	<field name="codigo" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="codigo"/>
+		<property name="com.jaspersoft.studio.field.label" value="codigo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="articulo"/>
+	</field>
+	<field name="COLUMN_15" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="articulo"/>
+	</field>
+	<field name="cantidad" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="cantidad"/>
+		<property name="com.jaspersoft.studio.field.label" value="cantidad"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_venta"/>
+	</field>
+	<field name="precio" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="precio"/>
+		<property name="com.jaspersoft.studio.field.label" value="precio"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_venta"/>
+	</field>
+	<field name="descuento" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.name" value="descuento"/>
+		<property name="com.jaspersoft.studio.field.label" value="descuento"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="detalle_venta"/>
+	</field>
+	<variable name="tipo_comprobante1" class="java.lang.Integer" resetType="Page" calculation="Count">
+		<variableExpression><![CDATA[$F{tipo_comprobante}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="221" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="340" y="20" width="200" height="90" uuid="7c8be79b-b320-476d-9ad7-a6969e36a80f"/>
+				<graphicElement>
+					<pen lineWidth="2.0"/>
+				</graphicElement>
+			</rectangle>
+			<textField>
+				<reportElement x="370" y="23" width="135" height="30" uuid="296eb864-64e8-4057-890e-26cc6f11793f"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo_comprobante}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="370" y="53" width="54" height="30" uuid="c89d4397-e94d-41b7-9ef9-52eccddde467"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{serie_comprobante}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="53" width="50" height="30" uuid="61b631fc-7926-434b-99fe-22d81a55fbe7"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{num_comprobante}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="423" y="53" width="30" height="30" uuid="537dea53-d49c-4067-bdcc-c8e3f1dcfed6"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[-]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="408" y="118" width="132" height="30" uuid="2f4fb29c-04ff-43ff-abf2-4a86ce55db7a"/>
+				<textElement textAlignment="Right">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="10" y="136" width="80" height="19" uuid="80169c3c-c484-4eb2-b9af-bbf07037232c"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="156" width="80" height="19" uuid="f53825b1-1da7-412f-85c5-5c2b21acdd4f"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Documento:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="175" width="80" height="19" uuid="ccaec1cd-288f-4507-97f7-0cb887028f07"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Dirección:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="195" width="80" height="19" uuid="447f411b-1a10-4bf7-81af-b797fa037e62"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Teléfono:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="142" y="156" width="100" height="19" uuid="3733bb52-02ad-45db-a4f7-88cf1631f247"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{num_documento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="175" width="180" height="19" uuid="2eb928b2-556f-430a-afb5-4529fa46908c"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{direccion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="195" width="100" height="18" uuid="2bf73ef4-81af-4178-b713-29fd100e5217"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="136" width="180" height="19" uuid="a3c6093a-feea-48a7-a35b-44ebab92e21a"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="156" width="39" height="18" uuid="c5ed42ef-395c-4fbe-b7a1-c59a1d89face"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipo_documento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="300" y="195" width="70" height="19" uuid="bbb66307-e1d3-4cbd-83a5-a426db268197"/>
+				<textElement>
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vendedor:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="374" y="195" width="100" height="18" uuid="200b6b04-05fb-4990-94a3-fb474afdfbd3"/>
+				<textElement>
+					<font size="11" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{COLUMN_13}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="25" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="80" height="20" backcolor="#BDB9B9" uuid="7d826580-7159-4cac-ad21-f386ed5e4263"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="80" y="0" width="233" height="20" backcolor="#BDB9B9" uuid="3e894994-96f7-4b54-b1c5-17a594df5ccf"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="313" y="0" width="80" height="20" backcolor="#BDB9B9" uuid="f7eb5745-07c6-4556-a902-84b89fd2da7a"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="0" width="84" height="20" backcolor="#BDB9B9" uuid="198cc02c-c321-477d-8c49-6b6dcf677ad5"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="474" y="0" width="80" height="20" backcolor="#BDB9B9" uuid="b83d80d9-3937-4875-900d-b8b6c7754291"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="0" width="80" height="20" uuid="e11c311e-42ec-4b6d-b854-f1ad5dfeb98f">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b983503a-2117-4fa2-bee4-60ae762598fb"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cantidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="0" width="233" height="20" uuid="933e946c-b787-4d6b-8d17-c70a338a892d">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d8023420-cdfb-444b-b362-2523d34b5d66"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Artículo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="313" y="0" width="77" height="25" uuid="d44edfda-2298-48a6-a711-8f1dbd80c702">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1c816e5b-f1a3-4313-9352-d16783a0d4cd"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Precio Unitario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="0" width="84" height="25" uuid="424a09f9-93cd-4ddf-b678-5cf80915a188">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="97ec9274-07da-4e73-9d38-2f4abcfa6c2e"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descuento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="474" y="0" width="80" height="20" uuid="92ef8954-b789-427f-badd-fd6196073fa5">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3846435a-d650-495d-ad69-cd4fa65ee928"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sub Total]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16" splitType="Stretch">
+			<rectangle>
+				<reportElement x="474" y="-4" width="80" height="20" uuid="31658b03-36e3-4a9a-8989-0251b7b46b79"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="390" y="-4" width="84" height="20" uuid="54470df2-2fd6-4aae-9816-482789d71f8f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="313" y="-4" width="77" height="20" uuid="50907697-3164-4c38-a3bc-f643bfb8697f"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="80" y="-4" width="233" height="20" uuid="9934b22b-77b5-4d18-ba05-b08bc3506585"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="-4" width="80" height="20" uuid="7406f1da-285d-40c1-a47d-8b854f1b77db"/>
+			</rectangle>
+			<textField>
+				<reportElement x="0" y="-4" width="80" height="20" uuid="d209ebab-d20d-4b0c-aa15-9cb1dc895dd8">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="b983503a-2117-4fa2-bee4-60ae762598fb"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{cantidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="-5" width="233" height="21" uuid="da08d674-671c-439a-9d66-214f6128ff07">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d8023420-cdfb-444b-b362-2523d34b5d66"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{COLUMN_15}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="313" y="-5" width="77" height="21" uuid="59c924a7-cb6f-49f4-81fe-d9f0086375c0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1c816e5b-f1a3-4313-9352-d16783a0d4cd"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{precio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="390" y="-4" width="84" height="20" uuid="f1a582b0-fffd-4ce8-9881-1214e7ec4ff4">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="97ec9274-07da-4e73-9d38-2f4abcfa6c2e"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[$F{descuento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="474" y="-4" width="80" height="20" uuid="dd00fed1-82c5-4839-9914-e092390bbb18">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="3846435a-d650-495d-ad69-cd4fa65ee928"/>
+				</reportElement>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression><![CDATA[($F{precio}.doubleValue() * $F{cantidad}) - $F{descuento}.doubleValue()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="78" splitType="Stretch">
+			<staticText>
+				<reportElement x="388" y="8" width="98" height="19" uuid="4e0802a1-d6f8-4c99-84f6-9f06d0714bff"/>
+				<textElement textAlignment="Right">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Parcial:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="388" y="28" width="98" height="19" uuid="bc2a9b20-2959-4e4c-8515-20518bbdf133"/>
+				<textElement textAlignment="Right">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Impuesto:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="388" y="47" width="98" height="19" uuid="bd978957-d5e1-4bff-9a0b-1a6ddc6a6ffe"/>
+				<textElement textAlignment="Right">
+					<font size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Neto:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="490" y="47" width="63" height="19" uuid="398a4336-67ad-458b-a8c5-c2882c8eb55f"/>
+				<textElement textAlignment="Right">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["S/."+$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="490" y="8" width="63" height="19" uuid="486933c5-5fee-4530-8428-0e2b4e41399f"/>
+				<textElement textAlignment="Right">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["S/." +String.format("%.2f", $F{total}.doubleValue() / (1 + $F{impuesto}.doubleValue()))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="490" y="28" width="63" height="19" uuid="73cf8573-f2eb-412f-b364-a4bf05ab17fe"/>
+				<textElement textAlignment="Right">
+					<font size="11"/>
+				</textElement>
+				<textFieldExpression><![CDATA["S/. " +String.format("%.2f", $F{total}.doubleValue() - ($F{total}.doubleValue() / (1 + $F{impuesto}.doubleValue())))]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

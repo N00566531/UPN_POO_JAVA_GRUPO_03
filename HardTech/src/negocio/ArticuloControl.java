@@ -13,12 +13,12 @@ import java.util.Map;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
 
-/*import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;*/
+import net.sf.jasperreports.view.JasperViewer;
 
 
 //Gestionar la lógica de mantenimiento de Articulo
@@ -244,7 +244,7 @@ public class ArticuloControl {
         return this.registrosMostrados;
     }
     
-   /* public void reporteArticulos(){
+   public void reporteArticulos(){
         Map p=new HashMap();
         JasperReport report;
         JasperPrint print;
@@ -280,6 +280,6 @@ public class ArticuloControl {
         } catch (JRException e) {
             e.getMessage();
         }
-    }*/
+    }
 }
 

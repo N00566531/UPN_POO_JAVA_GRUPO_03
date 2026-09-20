@@ -1,4 +1,3 @@
-
 package presentacion;
 
 import java.awt.event.KeyEvent;
@@ -10,131 +9,128 @@ import javax.swing.table.TableRowSorter;
 import negocio.VentaControl;
 
 public class FrmVenta extends javax.swing.JInternalFrame {
-    
+
     private final VentaControl CONTROL;
     private String accion;
     private String nombreAnt;
-    
+
     private int totalPorPagina = 10;
     private int numPagina = 1;
     private boolean primeraCarga = true;
     private int totalRegistros;
-    
+
     public DefaultTableModel modeloDetalles;
     public JFrame contenedor;
 
-    
     /**
      * Creates new form FrmCategoria
      */
     public FrmVenta(JFrame frmP) {
         initComponents();
-        this.contenedor=frmP;
-        this.CONTROL=new VentaControl();
+        this.contenedor = frmP;
+        this.CONTROL = new VentaControl();
         this.paginar();
-        this.listar("",false);
-        this.primeraCarga=false;
+        this.listar("", false);
+        this.primeraCarga = false;
         tabGeneral.setEnabledAt(1, false);
-        this.accion="guardar";
+        this.accion = "guardar";
         this.crearDetalles();
     }
-    
-    private void paginar(){
+
+    private void paginar() {
         int totalPaginas;
-        
-        this.totalRegistros=this.CONTROL.total();
-        this.totalPorPagina=Integer.parseInt((String)cboTotalPorPagina.getSelectedItem());
-        totalPaginas=(int)(Math.ceil((double)this.totalRegistros/this.totalPorPagina));
-        if (totalPaginas==0){
-            totalPaginas=1;
+
+        this.totalRegistros = this.CONTROL.total();
+        this.totalPorPagina = Integer.parseInt((String) cboTotalPorPagina.getSelectedItem());
+        totalPaginas = (int) (Math.ceil((double) this.totalRegistros / this.totalPorPagina));
+        if (totalPaginas == 0) {
+            totalPaginas = 1;
         }
         cboNumPagina.removeAllItems();
-        
+
         for (int i = 1; i <= totalPaginas; i++) {
             cboNumPagina.addItem(Integer.toString(i));
         }
         cboNumPagina.setSelectedIndex(0);
     }
-    
-    private void listar(String texto, boolean paginar){
-        this.totalPorPagina=Integer.parseInt((String)cboTotalPorPagina.getSelectedItem());
-        if ((String)cboNumPagina.getSelectedItem()!=null){
-            this.numPagina=Integer.parseInt((String)cboNumPagina.getSelectedItem());
+
+    private void listar(String texto, boolean paginar) {
+        this.totalPorPagina = Integer.parseInt((String) cboTotalPorPagina.getSelectedItem());
+        if ((String) cboNumPagina.getSelectedItem() != null) {
+            this.numPagina = Integer.parseInt((String) cboNumPagina.getSelectedItem());
         }
-        
-        if (paginar==true){
-            tablaListado.setModel(this.CONTROL.listar(texto,this.totalPorPagina,this.numPagina));
-        }else{
-            tablaListado.setModel(this.CONTROL.listar(texto,this.totalPorPagina,1));
+
+        if (paginar == true) {
+            tablaListado.setModel(this.CONTROL.listar(texto, this.totalPorPagina, this.numPagina));
+        } else {
+            tablaListado.setModel(this.CONTROL.listar(texto, this.totalPorPagina, 1));
         }
-        
-        
-        TableRowSorter orden= new TableRowSorter(tablaListado.getModel());
+
+        TableRowSorter orden = new TableRowSorter(tablaListado.getModel());
         tablaListado.setRowSorter(orden);
         this.ocultarColumnas();
         lblTotalRegistros.setText("Mostrando " + this.CONTROL.totalMostrados() + " de un total de " + this.CONTROL.total() + " registros");
     }
-    
-    private void ocultarColumnas(){
+
+    private void ocultarColumnas() {
         tablaListado.getColumnModel().getColumn(1).setMaxWidth(0);
         tablaListado.getColumnModel().getColumn(1).setMinWidth(0);
         tablaListado.getTableHeader().getColumnModel().getColumn(1).setMaxWidth(0);
         tablaListado.getTableHeader().getColumnModel().getColumn(1).setMinWidth(0);
-        
+
         tablaListado.getColumnModel().getColumn(3).setMaxWidth(0);
         tablaListado.getColumnModel().getColumn(3).setMinWidth(0);
         tablaListado.getTableHeader().getColumnModel().getColumn(3).setMaxWidth(0);
         tablaListado.getTableHeader().getColumnModel().getColumn(3).setMinWidth(0);
     }
-    
-    private void crearDetalles(){
-        modeloDetalles = new DefaultTableModel(){
+
+    private void crearDetalles() {
+        modeloDetalles = new DefaultTableModel() {
             @Override
-            public boolean isCellEditable(int fila, int columna) { 
-                if (columna==4){//cantidad
-                    return columna==4;
+            public boolean isCellEditable(int fila, int columna) {
+                if (columna == 4) {//cantidad
+                    return columna == 4;
                 }
-                if (columna==5){//precio
-                    return columna==5;
+                if (columna == 5) {//precio
+                    return columna == 5;
                 }
-                if (columna==6){
-                    return columna==6; //descuento
+                if (columna == 6) {
+                    return columna == 6; //descuento
                 }
-                return columna==4;
+                return columna == 4;
             }
 
             @Override
             public Object getValueAt(int row, int col) {
-                if (col==7){ //sub total
+                if (col == 7) { //sub total
                     Double cantD;
                     try {
-                        cantD=Double.parseDouble((String)getValueAt(row, 4));
+                        cantD = Double.parseDouble((String) getValueAt(row, 4));
                     } catch (Exception e) {
-                        cantD=1.0;
+                        cantD = 1.0;
                     }
-                    Double precioD=Double.parseDouble((String)getValueAt(row, 5));
-                    Double descuentoD=Double.parseDouble((String)getValueAt(row, 6));
+                    Double precioD = Double.parseDouble((String) getValueAt(row, 5));
+                    Double descuentoD = Double.parseDouble((String) getValueAt(row, 6));
                     //si cant es diferente de null y precio diferente de null y desc diferente de null
-                    if (cantD!=null && precioD!=null && descuentoD!=null){
+                    if (cantD != null && precioD != null && descuentoD != null) {
                         //calculo el subtotal
-                        return String.format("%.2f",(cantD*precioD)-descuentoD);
-                    }else{
+                        return String.format("%.2f", (cantD * precioD) - descuentoD);
+                    } else {
                         return 0;
                     }
                 }
                 return super.getValueAt(row, col);
             }
 
-
             @Override
             public void setValueAt(Object aValue, int row, int col) {
                 super.setValueAt(aValue, row, col);
                 try {
                     //captura cantidad y stock
-                    int cantD=Integer.parseInt((String)getValueAt(row, 4));
-                    int stockD=Integer.parseInt((String)getValueAt(row, 3));
+                    int cantD = Integer.parseInt((String) getValueAt(row, 4));
+                    int stockD = Integer.parseInt((String) getValueAt(row, 3));
                     //si la cantidad a vender es mayor al stock, mensaje de error
-                    if (cantD>stockD){
+                    if (cantD > stockD) {
                         super.setValueAt(stockD, row, 4); //la cantidad a lo mucho será el stock disponible
                         mensajeError("La cantidad a vender no puede superar el stock. Se puede vender como máximo: " + stockD);
                     }
@@ -144,74 +140,72 @@ public class FrmVenta extends javax.swing.JInternalFrame {
                 calcularTotales();
                 fireTableDataChanged();
             }
-        
+
         };
-        
-        modeloDetalles.setColumnIdentifiers(new Object[]{"ID","CODIGO","ARTICULO","STOCK","CANTIDAD","PRECIO","DESCUENTO","SUBTOTAL"});
+
+        modeloDetalles.setColumnIdentifiers(new Object[]{"ID", "CODIGO", "ARTICULO", "STOCK", "CANTIDAD", "PRECIO", "DESCUENTO", "SUBTOTAL"});
         tablaDetalles.setModel(modeloDetalles);
     }
-    
-    public void agregarDetalles(String id,String codigo, String nombre,String stock,String precio,String descuento){
+
+    public void agregarDetalles(String id, String codigo, String nombre, String stock, String precio, String descuento) {
         String idT;
-        boolean existe=false;
+        boolean existe = false;
         for (int i = 0; i < this.modeloDetalles.getRowCount(); i++) {
-            idT=String.valueOf(this.modeloDetalles.getValueAt(i, 0));
-            if (idT.equals(id)){
-                existe=true;
+            idT = String.valueOf(this.modeloDetalles.getValueAt(i, 0));
+            if (idT.equals(id)) {
+                existe = true;
             }
         }
-        if (existe){
+        if (existe) {
             this.mensajeError("El artículo ya ha sido agregado.");
-        }
-        else{
-            this.modeloDetalles.addRow(new Object[]{id,codigo,nombre,stock,"1",precio,descuento,precio});
+        } else {
+            this.modeloDetalles.addRow(new Object[]{id, codigo, nombre, stock, "1", precio, descuento, precio});
             this.calcularTotales();
         }
     }
-    
-    private void calcularTotales(){
-        double total=0;
+
+    private void calcularTotales() {
+        double total = 0;
         double subTotal;
-        int items=modeloDetalles.getRowCount();
-        if (items==0){
-            total=0;
-        }else{
+        int items = modeloDetalles.getRowCount();
+        if (items == 0) {
+            total = 0;
+        } else {
             for (int i = 0; i < items; i++) {
-                total=total+Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 7)));
+                total = total + Double.parseDouble(String.valueOf(modeloDetalles.getValueAt(i, 7)));
             }
         }
-        subTotal=total/(1+Double.parseDouble(txtImpuesto.getText()));
-        
-        txtTotal.setText(String.format("%.2f",total));
-        txtSubTotal.setText(String.format("%.2f",subTotal));
-        txtTotalImpuesto.setText(String.format("%.2f",total-subTotal));
+        subTotal = total / (1 + Double.parseDouble(txtImpuesto.getText()));
+
+        txtTotal.setText(String.format("%.2f", total));
+        txtSubTotal.setText(String.format("%.2f", subTotal));
+        txtTotalImpuesto.setText(String.format("%.2f", total - subTotal));
     }
-       
-    private void limpiar(){
+
+    private void limpiar() {
         txtNombreCliente.setText("");
         txtIdCliente.setText("");
         txtSerieComprobante.setText("");
         txtNumComprobante.setText("");
         txtImpuesto.setText("0.18");
 
-        this.accion="guardar";
-        
+        this.accion = "guardar";
+
         txtTotal.setText("0.00");
         txtSubTotal.setText("0.00");
-        txtTotalImpuesto.setText("0.00");      
+        txtTotalImpuesto.setText("0.00");
         this.crearDetalles();
         btnGuardar.setVisible(true);
     }
-    
-    private void mensajeError(String mensaje){
-        JOptionPane.showMessageDialog(this, mensaje,"Sistema",JOptionPane.ERROR_MESSAGE);
-    }
-    
-    private void mensajeOk(String mensaje){
-        JOptionPane.showMessageDialog(this, mensaje,"Sistema",JOptionPane.INFORMATION_MESSAGE);
+
+    private void mensajeError(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Sistema", JOptionPane.ERROR_MESSAGE);
     }
 
-  
+    private void mensajeOk(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Sistema", JOptionPane.INFORMATION_MESSAGE);
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -628,14 +622,14 @@ public class FrmVenta extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        this.listar(txtBuscar.getText(),false);
+        this.listar(txtBuscar.getText(), false);
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         tabGeneral.setEnabledAt(1, true);
         tabGeneral.setEnabledAt(0, false);
         tabGeneral.setSelectedIndex(1);
-        this.accion="guardar";
+        this.accion = "guardar";
         btnGuardar.setText("Guardar");
         this.obtenerNumero();
     }//GEN-LAST:event_btnNuevoActionPerformed
@@ -648,27 +642,27 @@ public class FrmVenta extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        if (txtIdCliente.getText().length()==0){
-            JOptionPane.showMessageDialog(this, "Debes seleccionar un proveedor.","Sistema", JOptionPane.WARNING_MESSAGE);
+        if (txtIdCliente.getText().length() == 0) {
+            JOptionPane.showMessageDialog(this, "Debes seleccionar un proveedor.", "Sistema", JOptionPane.WARNING_MESSAGE);
             btnSeleccionarCliente.requestFocus();
             return;
         }
-        if (txtSerieComprobante.getText().length()>7){
-            JOptionPane.showMessageDialog(this, "Debes ingresar una serie no mayor a 7 caracteres.","Sistema", JOptionPane.WARNING_MESSAGE);
+        if (txtSerieComprobante.getText().length() > 7) {
+            JOptionPane.showMessageDialog(this, "Debes ingresar una serie no mayor a 7 caracteres.", "Sistema", JOptionPane.WARNING_MESSAGE);
             txtSerieComprobante.requestFocus();
             return;
         }
-        if (txtNumComprobante.getText().length()==0 || txtNumComprobante.getText().length()>10){
-            JOptionPane.showMessageDialog(this, "Debes ingresar un número de comprobante no mayor a 10 caracteres.","Sistema", JOptionPane.WARNING_MESSAGE);
+        if (txtNumComprobante.getText().length() == 0 || txtNumComprobante.getText().length() > 10) {
+            JOptionPane.showMessageDialog(this, "Debes ingresar un número de comprobante no mayor a 10 caracteres.", "Sistema", JOptionPane.WARNING_MESSAGE);
             txtNumComprobante.requestFocus();
             return;
-        }  
-        if (modeloDetalles.getRowCount()==0){
-            JOptionPane.showMessageDialog(this, "Debes agregar artículos al detalle.","Sistema", JOptionPane.WARNING_MESSAGE);
+        }
+        if (modeloDetalles.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Debes agregar artículos al detalle.", "Sistema", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        String resp="";
-        resp=this.CONTROL.insertar(Integer.parseInt(txtIdCliente.getText()),(String)cboTipoComprobante.getSelectedItem(),txtSerieComprobante.getText(),txtNumComprobante.getText(),Double.parseDouble(txtImpuesto.getText()),Double.parseDouble(txtTotal.getText()),modeloDetalles);
+        String resp = "";
+        resp = this.CONTROL.insertar(Integer.parseInt(txtIdCliente.getText()), (String) cboTipoComprobante.getSelectedItem(), txtSerieComprobante.getText(), txtNumComprobante.getText(), Double.parseDouble(txtImpuesto.getText()), Double.parseDouble(txtTotal.getText()), modeloDetalles);
         if (resp.equals("OK")) {
             this.mensajeOk("Registrado correctamente");
             this.limpiar();
@@ -678,23 +672,22 @@ public class FrmVenta extends javax.swing.JInternalFrame {
                 tabGeneral.setEnabledAt(0, true);*/
         } else {
             this.mensajeError(resp);
-        }       
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnDesactivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDesactivarActionPerformed
         if (tablaListado.getSelectedRowCount() == 1) {
-            String id= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(),0));
-            String comprobante= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(),5));
-            String serie= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(),6));
-            String numero= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(),7));
-            
-            
-            if(JOptionPane.showConfirmDialog(this,"Deseas anular el registro: " + comprobante+ " " + serie+ "-"+numero + " ?", "Anular", JOptionPane.YES_NO_OPTION)==0){
-                String resp=this.CONTROL.anular(Integer.parseInt(id));
-                if (resp.equals("OK")){
+            String id = String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 0));
+            String comprobante = String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 5));
+            String serie = String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 6));
+            String numero = String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 7));
+
+            if (JOptionPane.showConfirmDialog(this, "Deseas anular el registro: " + comprobante + " " + serie + "-" + numero + " ?", "Anular", JOptionPane.YES_NO_OPTION) == 0) {
+                String resp = this.CONTROL.anular(Integer.parseInt(id));
+                if (resp.equals("OK")) {
                     this.mensajeOk("Registro anulado");
-                    this.listar("",false);
-                }else{
+                    this.listar("", false);
+                } else {
                     this.mensajeError(resp);
                 }
             }
@@ -704,8 +697,8 @@ public class FrmVenta extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnDesactivarActionPerformed
 
     private void cboNumPaginaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboNumPaginaActionPerformed
-        if (this.primeraCarga==false){
-            this.listar("",true);
+        if (this.primeraCarga == false) {
+            this.listar("", true);
         }
     }//GEN-LAST:event_cboNumPaginaActionPerformed
 
@@ -714,28 +707,28 @@ public class FrmVenta extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_cboTotalPorPaginaActionPerformed
 
     private void btnSeleccionarClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarClienteActionPerformed
-        FrmSeleccionarClienteVenta frm=new FrmSeleccionarClienteVenta(contenedor, this, true);
+        FrmSeleccionarClienteVenta frm = new FrmSeleccionarClienteVenta(contenedor, this, true);
         frm.toFront();
     }//GEN-LAST:event_btnSeleccionarClienteActionPerformed
 
     private void btnVerArticulosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerArticulosActionPerformed
-        FrmSeleccionarArticuloVenta frm =new FrmSeleccionarArticuloVenta(contenedor, this, true);
+        FrmSeleccionarArticuloVenta frm = new FrmSeleccionarArticuloVenta(contenedor, this, true);
         frm.toFront();
     }//GEN-LAST:event_btnVerArticulosActionPerformed
 
     private void txtCodigoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoKeyReleased
-        if (txtCodigo.getText().length()>0){
-            if (evt.getKeyCode()==KeyEvent.VK_ENTER){
+        if (txtCodigo.getText().length() > 0) {
+            if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
                 entidades.Articulo art;
-                art=this.CONTROL.obtenerArticuloCodigoVenta(txtCodigo.getText());
-                if (art==null){
+                art = this.CONTROL.obtenerArticuloCodigoVenta(txtCodigo.getText());
+                if (art == null) {
                     this.mensajeError("No existe un artículo con ese código");
-                }else{
-                    this.agregarDetalles(Integer.toString(art.getId()),art.getCodigo(),art.getNombre(),Integer.toString(art.getStock()),Double.toString(art.getPrecioVenta()),"0");
+                } else {
+                    this.agregarDetalles(Integer.toString(art.getId()), art.getCodigo(), art.getNombre(), Integer.toString(art.getStock()), Double.toString(art.getPrecioVenta()), "0");
                 }
             }
-            
-        }else{
+
+        } else {
             this.mensajeError("Ingrese el código a buscar.");
         }
     }//GEN-LAST:event_txtCodigoKeyReleased
@@ -744,64 +737,64 @@ public class FrmVenta extends javax.swing.JInternalFrame {
         if (tablaDetalles.getSelectedRowCount() == 1) {
             this.modeloDetalles.removeRow(tablaDetalles.getSelectedRow());
             this.calcularTotales();
-        }else{
+        } else {
             this.mensajeError("Seleccione el detalle a quitar.");
         }
     }//GEN-LAST:event_btnQuitarActionPerformed
 
     private void btnVerVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerVentaActionPerformed
-        if (tablaListado.getSelectedRowCount()==1){
-            String id= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(),0));
-            String idProveedor= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(),3));
-            String nombreProveedor= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(),4));            
-            String tipoComprobante=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(),5));
-            String serie = String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(),6));
-            String numero=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(),7));
-            String impuesto=String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(),9));
-            
+        if (tablaListado.getSelectedRowCount() == 1) {
+            String id = String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 0));
+            String idProveedor = String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 3));
+            String nombreProveedor = String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 4));
+            String tipoComprobante = String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 5));
+            String serie = String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 6));
+            String numero = String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 7));
+            String impuesto = String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 9));
+
             txtIdCliente.setText(idProveedor);
-            txtNombreCliente.setText(nombreProveedor);            
+            txtNombreCliente.setText(nombreProveedor);
             cboTipoComprobante.setSelectedItem(tipoComprobante);
             txtSerieComprobante.setText(serie);
-            txtNumComprobante.setText(numero); 
+            txtNumComprobante.setText(numero);
             txtImpuesto.setText(impuesto);
-            
-            this.modeloDetalles=CONTROL.listarDetalle(Integer.parseInt(id));
+
+            this.modeloDetalles = CONTROL.listarDetalle(Integer.parseInt(id));
             tablaDetalles.setModel(modeloDetalles);
             this.calcularTotales();
-            
+
             tabGeneral.setEnabledAt(1, true);
             tabGeneral.setEnabledAt(0, false);
             tabGeneral.setSelectedIndex(1);
             btnGuardar.setVisible(false);
-        }else{
-           this.mensajeError("Seleccione la venta a mostrar."); 
+        } else {
+            this.mensajeError("Seleccione la venta a mostrar.");
         }
     }//GEN-LAST:event_btnVerVentaActionPerformed
 
     private void obtenerNumero() {
-       String tipoComprobante = (String) cboTipoComprobante.getSelectedItem();
+        String tipoComprobante = (String) cboTipoComprobante.getSelectedItem();
         String serieComprobante = this.CONTROL.ultimoSerie(tipoComprobante);
         String numComprobante = this.CONTROL.ultimoNumero(tipoComprobante, serieComprobante);
         txtSerieComprobante.setText(serieComprobante);
-        if (numComprobante.equals("")){
+        if (numComprobante.equals("")) {
             txtNumComprobante.setText("");
-        }else{
+        } else {
             int num;
-            num=Integer.parseInt(numComprobante)+1;
+            num = Integer.parseInt(numComprobante) + 1;
             txtNumComprobante.setText(Integer.toString(num));
-        }  
-        
-    }
-    
-    private void btnReporteComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteComprobanteActionPerformed
-      /*  if (tablaListado.getSelectedRowCount()==1){
-            String id= String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(),0));
-            this.CONTROL.reporteComprobante(id);
-        }else{
-           this.mensajeError("Seleccione la venta para ver su reporte."); 
         }
-*/
+
+    }
+
+    private void btnReporteComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteComprobanteActionPerformed
+        if (tablaListado.getSelectedRowCount() == 1) {
+            String id = String.valueOf(tablaListado.getValueAt(tablaListado.getSelectedRow(), 0));
+            this.CONTROL.reporteComprobante(id);
+        } else {
+            this.mensajeError("Seleccione la venta para ver su reporte.");
+        }
+
     }//GEN-LAST:event_btnReporteComprobanteActionPerformed
 
     private void cboTipoComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboTipoComprobanteActionPerformed
