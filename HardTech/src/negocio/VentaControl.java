@@ -2,22 +2,26 @@
 package negocio;
 
 
+import database.Conexion;
 import datos.ArticuloDAO;
 import datos.VentaDAO;
 import entidades.Articulo;
 import entidades.DetalleVenta;
 import entidades.Venta;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.swing.table.DefaultTableModel;
 
-/*import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
-import net.sf.jasperreports.view.JasperViewer;*/
+import net.sf.jasperreports.view.JasperViewer;
 
 
 public class VentaControl {
@@ -171,6 +175,28 @@ public class VentaControl {
     public int totalMostrados(){
         return this.registrosMostrados;
     }
+    
+    
+    public void reporteComprobante(String idventa){
+        Map p=new HashMap();
+        p.put("idventa", idventa);
+        JasperReport report;
+        JasperPrint print;
+        
+        Conexion cnn=Conexion.getInstancia();
+        
+        try {
+            report=JasperCompileManager.compileReport(new File("").getAbsolutePath()+
+                    "/src/reportes/RptComprobante.jrxml");
+            print=JasperFillManager.fillReport(report, p,cnn.conectar());
+            JasperViewer view=new JasperViewer(print,false);
+            view.setTitle("Reporte de Artículos");
+            view.setVisible(true);
+        } catch (JRException e) {
+            e.getMessage();
+        }
+    }
+    
     
     public String ultimoSerie(String tipoComprobante) {
         return this.DATOS.ultimoSerie(tipoComprobante);
