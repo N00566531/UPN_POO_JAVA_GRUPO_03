@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import java.sql.Date;
 
 
 //Implementa la interfaz CrudIngresoInterface
@@ -233,6 +234,28 @@ public class IngresoDAO implements CrudIngresoInterface<Ingreso, DetalleIngreso>
             CON.desconectar();
         }
         return resp;
+    }
+    
+     public List<Ingreso> consultaFechas(Date fechaInicio, Date fechaFin) {
+        List<Ingreso> registros = new ArrayList();
+        try {
+            ps = CON.conectar().prepareStatement("SELECT i.id,i.usuario_id,u.nombre as usuario_nombre,i.persona_id,p.nombre as persona_nombre,i.tipo_comprobante,i.serie_comprobante,i.num_comprobante,i.fecha,i.impuesto,i.total,i.estado FROM ingreso i INNER JOIN persona p ON i.persona_id=p.id INNER JOIN usuario u ON i.usuario_id=u.id WHERE i.fecha>=? AND i.fecha<=?");
+            ps.setDate(1, fechaInicio);
+            ps.setDate(2, fechaFin);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                registros.add(new Ingreso(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getDate(9), rs.getDouble(10), rs.getDouble(11), rs.getString(12)));
+            }
+            ps.close();
+            rs.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } finally {
+            ps = null;
+            rs = null;
+            CON.desconectar();
+        }
+        return registros;
     }
     
 }

@@ -1,4 +1,3 @@
-
 package datos;
 
 //Importaciones
@@ -16,40 +15,39 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import java.sql.Date;
 
+public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta> {
 
-public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>  {
-   
     private final Conexion CON;
     private PreparedStatement ps;
     private ResultSet rs;
     private boolean resp;
-    
-    public VentaDAO(){
+
+    public VentaDAO() {
         //Instancio a obj CON y a su met conexion
-        CON=Conexion.getInstancia();
+        CON = Conexion.getInstancia();
     }
-    
-    
+
     @Override
     public List<Venta> listar(String texto, int totalPorPagina, int numPagina) {
-         List<Venta> registros=new ArrayList();
+        List<Venta> registros = new ArrayList();
         try {
-            ps=CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre,v.persona_id,p.nombre as persona_nombre,v.tipo_comprobante,v.serie_comprobante,v.num_comprobante,v.fecha,v.impuesto,v.total,v.estado FROM venta v INNER JOIN persona p ON v.persona_id=p.id INNER JOIN usuario u ON v.usuario_id=u.id WHERE v.num_comprobante LIKE ? ORDER BY v.id ASC LIMIT ?,?");
-            ps.setString(1,"%" + texto +"%");            
-            ps.setInt(2, (numPagina-1)*totalPorPagina);
+            ps = CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre,v.persona_id,p.nombre as persona_nombre,v.tipo_comprobante,v.serie_comprobante,v.num_comprobante,v.fecha,v.impuesto,v.total,v.estado FROM venta v INNER JOIN persona p ON v.persona_id=p.id INNER JOIN usuario u ON v.usuario_id=u.id WHERE v.num_comprobante LIKE ? ORDER BY v.id ASC LIMIT ?,?");
+            ps.setString(1, "%" + texto + "%");
+            ps.setInt(2, (numPagina - 1) * totalPorPagina);
             ps.setInt(3, totalPorPagina);
-            rs=ps.executeQuery();
-            while(rs.next()){
-                registros.add(new Venta(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getInt(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getDate(9),rs.getDouble(10),rs.getDouble(11),rs.getString(12)));
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                registros.add(new Venta(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getDate(9), rs.getDouble(10), rs.getDouble(11), rs.getString(12)));
             }
             ps.close();
             rs.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
-        } finally{
-            ps=null;
-            rs=null;
+        } finally {
+            ps = null;
+            rs = null;
             CON.desconectar();
         }
         return registros;
@@ -58,110 +56,116 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>  {
     @Override
     //met para listar los detalles de una venta
     public List<DetalleVenta> listarDetalle(int id) { //devuelve los detalles de un id de venta especifico que espera
-             List<DetalleVenta> registros=new ArrayList();
+        List<DetalleVenta> registros = new ArrayList();
         try {
-            ps=CON.conectar().prepareStatement("SELECT a.id,a.codigo,a.nombre,a.stock,d.cantidad,d.precio,d.descuento,((d.cantidad*precio)-d.descuento) as sub_total FROM detalle_venta d INNER JOIN articulo a ON d.articulo_id=a.id WHERE d.venta_id=?");
-            ps.setInt(1,id);
-            rs=ps.executeQuery();
-            while(rs.next()){ //envio al const estos 6 parametros
-                registros.add(new DetalleVenta(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getInt(4),rs.getInt(5),rs.getDouble(6),rs.getDouble(7),rs.getDouble(8)));
+            ps = CON.conectar().prepareStatement("SELECT a.id,a.codigo,a.nombre,a.stock,d.cantidad,d.precio,d.descuento,((d.cantidad*precio)-d.descuento) as sub_total FROM detalle_venta d INNER JOIN articulo a ON d.articulo_id=a.id WHERE d.venta_id=?");
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            while (rs.next()) { //envio al const estos 6 parametros
+                registros.add(new DetalleVenta(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getInt(4), rs.getInt(5), rs.getDouble(6), rs.getDouble(7), rs.getDouble(8)));
             }
             ps.close();
             rs.close();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
-        } finally{
-            ps=null;
-            rs=null;
+        } finally {
+            ps = null;
+            rs = null;
             CON.desconectar();
         }
         return registros;
     }
-    
+
     //Para poder insertar una venta tendremos en cuenta las transacciones
     //En insertar las haremos de manera manual (hasta ahora  fueron automaticas)
     //Si inserto la venta podré insertar los detalles, y entonces la transaccion será exitosa
     //De lo contrario se cancelará todo la venta
     @Override
     public boolean insertar(Venta obj) {
-         resp=false;
-         //Objeto Connection que hace nueva instancia a la clase conexion
-         //Para trabajar con trans manuales; esta nueva conexion basandose en la existente
-        Connection conn=null; //será nulo
+        resp = false;
+        //Objeto Connection que hace nueva instancia a la clase conexion
+        //Para trabajar con trans manuales; esta nueva conexion basandose en la existente
+        Connection conn = null; //será nulo
         try {
-            conn=CON.conectar();//llamo al met conectar del obj CON (instancia de la clase conexion)
+            conn = CON.conectar();//llamo al met conectar del obj CON (instancia de la clase conexion)
             //por defecto el AutoCommit es true (como en los demas mantenimientos)
             //para iniciar una transaccion se necesita deshabilitar el AutoCommit
             //para tener control de lo que se hace y cuando se hace
             //Met Commit para realizar las instrucciones emitidas
             //Si hay error entonces haremos rollback para deshacer esas peticiones
             conn.setAutoCommit(false);
-            
+
             //Var para almacenar la instruccion sql de insertar
-            String sqlInsertVenta="INSERT INTO venta (persona_id,usuario_id,fecha,tipo_comprobante,serie_comprobante,num_comprobante,impuesto,total,estado) VALUES (?,?,now(),?,?,?,?,?,?)";
-            
+            String sqlInsertVenta = "INSERT INTO venta (persona_id,usuario_id,fecha,tipo_comprobante,serie_comprobante,num_comprobante,impuesto,total,estado) VALUES (?,?,now(),?,?,?,?,?,?)";
+
             //le envio la sentencia al ps,tambien que me retorne el id de ese ingreso
-            ps=conn.prepareStatement(sqlInsertVenta,Statement.RETURN_GENERATED_KEYS);
+            ps = conn.prepareStatement(sqlInsertVenta, Statement.RETURN_GENERATED_KEYS);
             //envio los valores al ps, a los parametros que corresponden
-            ps.setInt(1,obj.getPersonaId());
+            ps.setInt(1, obj.getPersonaId());
             ps.setInt(2, obj.getUsuarioId());
-            ps.setString(3,obj.getTipoComprobante());
+            ps.setString(3, obj.getTipoComprobante());
             ps.setString(4, obj.getSerieComprobante());
             ps.setString(5, obj.getNumComprobante());
             ps.setDouble(6, obj.getImpuesto());
             ps.setDouble(7, obj.getTotal());
             ps.setString(8, "Aceptado");
-            
+
             //Var para ejecutar el ps; en caso se ejecute el ingreso, su valor será 1
-            int filasAfectadas=ps.executeUpdate();
+            int filasAfectadas = ps.executeUpdate();
             //obtengo el id del ingreso que se autogenera
-            rs=ps.getGeneratedKeys();
-            int idGenerado=0;
+            rs = ps.getGeneratedKeys();
+            int idGenerado = 0;
             //recorro el rs
-            if (rs.next()){
+            if (rs.next()) {
                 //var que almacena el id generado; lo obtengo del rs
-                idGenerado=rs.getInt(1);
+                idGenerado = rs.getInt(1);
             }
-            
+
             //si su valor es 1 (es porque insertó ingreso)
-            if (filasAfectadas==1){
+            if (filasAfectadas == 1) {
                 //entonces que se inserte el detalle del ingreso
                 //Var para almacenar la instruccion sql del detalle
-                String sqlInsertDetalle="INSERT INTO detalle_venta (venta_id,articulo_id,cantidad,precio,descuento) VALUES (?,?,?,?,?)";
+                String sqlInsertDetalle = "INSERT INTO detalle_venta (venta_id,articulo_id,cantidad,precio,descuento) VALUES (?,?,?,?,?)";
                 //le envio la sentencia al ps
-                ps=conn.prepareStatement(sqlInsertDetalle);
+                ps = conn.prepareStatement(sqlInsertDetalle);
                 //un ingreso tiene varios detalles
                 //recorro todos los detalles representados en un list
-                for (DetalleVenta item : obj.getDetalles()){//ese objeto tiene un list (Detalles)y lo obtengo
-                   //envio los valores al ps, a los parametros que corresponden 
-                    ps.setInt(1,idGenerado);
-                    ps.setInt(2,item.getArticuloId());
+                for (DetalleVenta item : obj.getDetalles()) {//ese objeto tiene un list (Detalles)y lo obtengo
+                    //envio los valores al ps, a los parametros que corresponden 
+                    ps.setInt(1, idGenerado);
+                    ps.setInt(2, item.getArticuloId());
                     ps.setInt(3, item.getCantidad());
                     ps.setDouble(4, item.getPrecio());
                     ps.setDouble(5, item.getDescuento());
                     //var booleana que vamos a enviar a negocio cuando ejecutamos insertar
-                   //si ejecuta el ps (mayor a 0), es porque insertó detalle
-                    resp=ps.executeUpdate()>0;
+                    //si ejecuta el ps (mayor a 0), es porque insertó detalle
+                    resp = ps.executeUpdate() > 0;
                 }
                 conn.commit();//si se inserta se ejecuta el commit               
-            }else{
+            } else {
                 conn.rollback();//de lo contrario que se anule el detalle al no poderse insertar el ingreso
             }
-        }  catch (SQLException e) {
+        } catch (SQLException e) {
             try {
-                if (conn!=null){//s ila conexion es diferente de nula
+                if (conn != null) {//s ila conexion es diferente de nula
                     conn.rollback();//ejecuto rollback para regresar la peticion para no afectar la db
                 }
                 JOptionPane.showMessageDialog(null, e.getMessage());
             } catch (SQLException ex) {
                 Logger.getLogger(VentaDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } finally{
+        } finally {
             try {
-                
-                if (rs!=null) rs.close();//cierro rs,ps y conn
-                if (ps!=null) ps.close();
-                if (conn!=null) conn.close();
+
+                if (rs != null) {
+                    rs.close();//cierro rs,ps y conn
+                }
+                if (ps != null) {
+                    ps.close();
+                }
+                if (conn != null) {
+                    conn.close();
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(VentaDAO.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -171,18 +175,18 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>  {
 
     @Override
     public boolean anular(int id) {
-         resp=false;
+        resp = false;
         try {
-            ps=CON.conectar().prepareStatement("UPDATE venta SET estado='Anulado' WHERE id=?");
+            ps = CON.conectar().prepareStatement("UPDATE venta SET estado='Anulado' WHERE id=?");
             ps.setInt(1, id);
-            if (ps.executeUpdate()>0){
-                resp=true;
+            if (ps.executeUpdate() > 0) {
+                resp = true;
             }
             ps.close();
-        }  catch (SQLException e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
-        } finally{
-            ps=null;
+        } finally {
+            ps = null;
             CON.desconectar();
         }
         return resp;
@@ -190,21 +194,21 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>  {
 
     @Override
     public int total() {
-         int totalRegistros=0;
+        int totalRegistros = 0;
         try {
-            ps=CON.conectar().prepareStatement("SELECT COUNT(id) FROM venta");            
-            rs=ps.executeQuery();
-            
-            while(rs.next()){
-                totalRegistros=rs.getInt("COUNT(id)");
-            }            
+            ps = CON.conectar().prepareStatement("SELECT COUNT(id) FROM venta");
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                totalRegistros = rs.getInt("COUNT(id)");
+            }
             ps.close();
             rs.close();
-        }  catch (SQLException e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
-        } finally{
-            ps=null;
-            rs=null;
+        } finally {
+            ps = null;
+            rs = null;
             CON.desconectar();
         }
         return totalRegistros;
@@ -212,72 +216,93 @@ public class VentaDAO implements CrudVentaInterface<Venta, DetalleVenta>  {
 
     @Override
     public boolean existe(String texto1, String texto2) {
-       resp=false;
+        resp = false;
         try {
-            ps=CON.conectar().prepareStatement("SELECT id FROM venta WHERE serie_comprobante=? AND num_comprobante=?");
+            ps = CON.conectar().prepareStatement("SELECT id FROM venta WHERE serie_comprobante=? AND num_comprobante=?");
             ps.setString(1, texto1);
             ps.setString(2, texto2);
-            rs=ps.executeQuery();
+            rs = ps.executeQuery();
             rs.last();
-            if(rs.getRow()>0){
-                resp=true;
-            }           
+            if (rs.getRow() > 0) {
+                resp = true;
+            }
             ps.close();
             rs.close();
-        }  catch (SQLException e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
-        } finally{
-            ps=null;
-            rs=null;
+        } finally {
+            ps = null;
+            rs = null;
             CON.desconectar();
         }
         return resp;
     }
-    
+
     public String ultimoSerie(String tipoComprobante) {
-        String serieComprobante="";
+        String serieComprobante = "";
         try {
-            ps=CON.conectar().prepareStatement("SELECT serie_comprobante FROM venta where tipo_comprobante=? order by serie_comprobante desc limit 1");            
+            ps = CON.conectar().prepareStatement("SELECT serie_comprobante FROM venta where tipo_comprobante=? order by serie_comprobante desc limit 1");
             ps.setString(1, tipoComprobante);
-            rs=ps.executeQuery();
-            
-            while(rs.next()){
-                serieComprobante=rs.getString("serie_comprobante");
-            }            
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                serieComprobante = rs.getString("serie_comprobante");
+            }
             ps.close();
             rs.close();
-        }  catch (SQLException e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
-        } finally{
-            ps=null;
-            rs=null;
+        } finally {
+            ps = null;
+            rs = null;
             CON.desconectar();
         }
         return serieComprobante;
     }
-    
-    public String ultimoNumero(String tipoComprobante,String serieComprobante) {
-        String numComprobante="";
+
+    public String ultimoNumero(String tipoComprobante, String serieComprobante) {
+        String numComprobante = "";
         try {
-            ps=CON.conectar().prepareStatement("SELECT num_comprobante FROM venta WHERE tipo_comprobante=? AND serie_comprobante=? order by num_comprobante desc limit 1");            
+            ps = CON.conectar().prepareStatement("SELECT num_comprobante FROM venta WHERE tipo_comprobante=? AND serie_comprobante=? order by num_comprobante desc limit 1");
             ps.setString(1, tipoComprobante);
             ps.setString(2, serieComprobante);
-            rs=ps.executeQuery();
-            
-            while(rs.next()){
-                numComprobante=rs.getString("num_comprobante");
-            }            
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                numComprobante = rs.getString("num_comprobante");
+            }
             ps.close();
             rs.close();
-        }  catch (SQLException e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
-        } finally{
-            ps=null;
-            rs=null;
+        } finally {
+            ps = null;
+            rs = null;
             CON.desconectar();
         }
         return numComprobante;
     }
-    
-    
+
+    public List<Venta> consultaFechas(Date fechaInicio, Date fechaFin) {
+        List<Venta> registros = new ArrayList();
+        try {
+            ps = CON.conectar().prepareStatement("SELECT v.id,v.usuario_id,u.nombre as usuario_nombre,v.persona_id,p.nombre as persona_nombre,v.tipo_comprobante,v.serie_comprobante,v.num_comprobante,v.fecha,v.impuesto,v.total,v.estado FROM venta v INNER JOIN persona p ON v.persona_id=p.id INNER JOIN usuario u ON v.usuario_id=u.id WHERE v.fecha>=? AND v.fecha<=?");
+            ps.setDate(1, fechaInicio);
+            ps.setDate(2, fechaFin);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                registros.add(new Venta(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getInt(4), rs.getString(5), rs.getString(6), rs.getString(7), rs.getString(8), rs.getDate(9), rs.getDouble(10), rs.getDouble(11), rs.getString(12)));
+            }
+            ps.close();
+            rs.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        } finally {
+            ps = null;
+            rs = null;
+            CON.desconectar();
+        }
+        return registros;
+    }
+
 }

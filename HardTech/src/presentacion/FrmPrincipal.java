@@ -195,6 +195,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         itemConsultaVentas.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.event.InputEvent.ALT_DOWN_MASK));
         itemConsultaVentas.setText("Consulta de Ventas");
+        itemConsultaVentas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemConsultaVentasActionPerformed(evt);
+            }
+        });
         mnuConsultas.add(itemConsultaVentas);
 
         menuBar.add(mnuConsultas);
@@ -234,10 +239,10 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         //Le enviamos un obj de tipo JFrame (este formulario principal)
-        FrmIngreso frm=new FrmIngreso(this);
+        FrmIngreso frm = new FrmIngreso(this);
         escritorio.add(frm);
         frm.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -269,19 +274,19 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        
-        FrmProveedor frm =new FrmProveedor();
+
+        FrmProveedor frm = new FrmProveedor();
         escritorio.add(frm);
         frm.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        
-        FrmCliente frm =new FrmCliente();
+
+        FrmCliente frm = new FrmCliente();
         escritorio.add(frm);
         frm.setVisible(true);
-         
+
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void mnuSalirMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_mnuSalirMouseClicked
@@ -289,16 +294,24 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuSalirMouseClicked
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
-        
-        FrmVenta frm =new FrmVenta(this);
+
+        FrmVenta frm = new FrmVenta(this);
         escritorio.add(frm);
         frm.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
     private void itemConsultaComprasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemConsultaComprasActionPerformed
-        // TODO add your handling code here:
+        FrmConsultaComprasFecha frm = new FrmConsultaComprasFecha();
+        escritorio.add(frm);
+        frm.setVisible(true);
     }//GEN-LAST:event_itemConsultaComprasActionPerformed
+
+    private void itemConsultaVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemConsultaVentasActionPerformed
+        FrmConsultaVentasFecha frm = new FrmConsultaVentasFecha();
+        escritorio.add(frm);
+        frm.setVisible(true);
+    }//GEN-LAST:event_itemConsultaVentasActionPerformed
 
     /**
      * @param args the command line arguments
