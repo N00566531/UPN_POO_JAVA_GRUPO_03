@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import java.sql.Date;
+
 
 /*import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -172,5 +174,36 @@ public class IngresoControl {
     
     public int totalMostrados(){
         return this.registrosMostrados;
+    }
+    
+    public DefaultTableModel consultaFechas(Date fechaInicio, Date fechaFin) {
+        List<Ingreso> lista = new ArrayList();
+        lista.addAll(DATOS.consultaFechas(fechaInicio, fechaFin));
+
+        String[] titulos = {"Id", "Usuario ID", "Usuario", "Proveedor ID", "Proveedor", "Tipo Comprobante", "Serie", "Número", "Fecha", "Impuesto", "Total", "Estado"};
+        this.modeloTabla = new DefaultTableModel(null, titulos);
+
+        String[] registro = new String[12];
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        this.registrosMostrados = 0;
+        for (Ingreso item : lista) {
+            registro[0] = Integer.toString(item.getId());
+            registro[1] = Integer.toString(item.getUsuarioId());
+            registro[2] = item.getUsuarioNombre();
+            registro[3] = Integer.toString(item.getPersonaId());
+            registro[4] = item.getPersonaNombre();
+            registro[5] = item.getTipoComprobante();
+            registro[6] = item.getSerieComprobante();
+            registro[7] = item.getNumComprobante();
+            registro[8] = sdf.format(item.getFecha());
+            registro[9] = Double.toString(item.getImpuesto());
+            registro[10] = Double.toString(item.getTotal());
+            registro[11] = item.getEstado();
+
+            this.modeloTabla.addRow(registro);
+            this.registrosMostrados = this.registrosMostrados + 1;
+        }
+        return this.modeloTabla;
     }
 }
